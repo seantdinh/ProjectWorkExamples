@@ -1,0 +1,61 @@
+CREATE TABLE job
+    ([id] int, 
+     [started] DATETIME NOT NULL,
+     [ended] DATETIME NOT NULL)
+;
+
+INSERT INTO job
+    ([id], [started], [ended])
+VALUES
+(1, '2016-09-26 08:00', '2016-09-26 11:30'),
+(2, '2016-09-26 08:02', '2016-09-26 10:03'),
+(3, '2016-09-26 08:04', '2016-09-26 09:45'),
+(4, '2016-09-27 08:05', '2016-09-27 08:06'),
+(5, '2016-09-27 08:10', '2016-09-27 08:11'),
+(6, '2016-09-27 08:14', '2016-09-27 09:45'),
+(7, '2016-09-27 08:16', '2016-09-27 08:20')
+;
+
+---------------------------Query---------------------------------
+
+with CategorizingStartEndType as 
+(
+SELECT started AS OrderedDates, +1 AS TYPE,
+ROW_NUMBER() OVER(ORDER BY started) AS StartPosition
+FROM job
+UNION ALL
+SELECT ended, -1, NULL
+FROM job
+),
+
+TotalJobInC AS
+(
+  SELECT *,
+    SUM(TYPE) OVER(ORDER BY OrderedDates, TYPE) AS TotalJobsInProgress
+  FROM CategorizingStartEndType
+),
+
+AVGNumberConcurrentPerRow AS
+(
+select *, round(AVG(TotalJobsInProgress*1.0) OVER(ORDER BY OrderedDates, TYPE), 3) as AverageNumberConcurrent
+from TotalJobInC
+),
+
+TotalAVG AS
+(
+select sum(type) as TYPE, sum(TotalJobsInProgress) as SUMofTotalJobsInProgress
+from AVGNumberConcurrentPerRow
+where type = 1
+)
+
+/* Use for Average Number of Concurrent Jobs for each time start/finish */
+select *
+from AVGNumberConcurrentPerRow
+
+
+/* Use for TotalAVG */
+select SUMofTotalJobsInProgress, ROUND((CAST(TYPE as DECIMAL)/SUMofTotalJobsInProgress),3) AS AVG
+from TotalAVG;
+
+
+

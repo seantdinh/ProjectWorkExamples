@@ -1,0 +1,175 @@
+CREATE TABLE A1
+    ([id] int, 
+     [Name] varchar(MAX) NOT NULL,
+     [DOB] DATE NOT NULL)
+;
+
+CREATE TABLE A2
+    ([id] int, 
+     [Name] varchar(MAX) NOT NULL,
+     [DOB] DATE NOT NULL)
+;
+
+CREATE TABLE B1
+    ([id] int, 
+     [Name] varchar(MAX) NOT NULL,
+     [DOB] DATE NOT NULL)
+;
+
+CREATE TABLE B2
+    ([id] int, 
+     [Name] varchar(MAX) NOT NULL,
+     [DOB] DATE NOT NULL)
+;
+CREATE TABLE C1
+    ([id] int, 
+     [Name] varchar(MAX) NOT NULL,
+     [DOB] DATE NOT NULL)
+;
+CREATE TABLE C2
+    ([id] int, 
+     [Name] varchar(MAX) NOT NULL,
+     [DOB] DATE NOT NULL)
+;
+
+CREATE TABLE D1
+    ([id] int, 
+     [Name] varchar(MAX) NOT NULL,
+     [DOB] DATE NOT NULL)
+;
+
+CREATE TABLE D2
+    ([id] int, 
+     [Name] varchar(MAX) NOT NULL,
+     [DOB] DATE NOT NULL)
+;
+
+INSERT INTO A1
+    ([id], [Name], [DOB])
+VALUES
+(1, 'Amy', '2016-09-26'),
+(2, 'John', '2016-09-26'),
+(3, 'Sam', '2016-09-26'),
+(4, 'Jack', '2016-09-27')
+;
+
+INSERT INTO A2
+    ([id], [Name], [DOB])
+VALUES
+(1, 'Sean', '2016-09-26'),
+(2, 'John', '2016-09-27'),
+(3, 'Sam', '2016-09-26'),
+(4, 'Jack', '2016-09-27')
+;
+
+INSERT INTO B1
+    ([id], [Name], [DOB])
+VALUES
+(1, 'Sean', '2016-09-26'),
+(2, 'John', '2016-09-27'),
+(3, 'Sam', '2016-09-26'),
+(4, 'Jack', '2016-09-27')
+;
+
+INSERT INTO B2
+    ([id], [Name], [DOB])
+VALUES
+(1, 'Sean', '2016-09-26'),
+(2, 'John', '2016-09-27'),
+(3, 'Sam', '2016-09-26'),
+(4, 'Jack', '2016-09-27')
+;
+
+INSERT INTO C1
+    ([id], [Name], [DOB])
+VALUES
+(1, 'Sean', '2016-09-26'),
+(2, 'John', '2016-09-27'),
+(3, 'Sam', '2016-09-26'),
+(4, 'Jack', '2016-09-27')
+;
+
+INSERT INTO C2
+    ([id], [Name], [DOB])
+VALUES
+(1, 'Sean', '2016-09-26'),
+(2, 'GAWD', '2016-09-27'),
+(3, 'Sam', '2016-09-26'),
+(4, 'Jack', '2016-09-27')
+;
+
+INSERT INTO D1
+    ([id], [Name], [DOB])
+VALUES
+(1, 'Sean', '2016-09-26'),
+(2, 'John', '2016-09-27'),
+(3, 'Sam', '2016-09-26'),
+(4, 'Jack', '2016-09-27')
+;
+
+INSERT INTO D2
+    ([id], [Name], [DOB])
+VALUES
+(1, 'Sean', '2016-09-26'),
+(2, 'John', '2016-09-27'),
+(3, 'Sam', '2016-09-26'),
+(4, 'Jack', '2016-09-27')
+;
+
+
+-------------------------------------Query----------------------------------------------
+
+with Atables AS(
+select  TablesChecked, Compare, row_number() over(order by Compare) as RowNumber
+from (select 'Atables' as TablesChecked,
+          case when A1.name != A2.name or A1.DOB != A2.DOB then 'Differ'
+              else 'Identical'
+          end Compare
+          from A1 full outer join A2 on A1.id= A2.id) checking
+
+), 
+Btables AS
+(
+select  TablesChecked, Compare, row_number() over(order by Compare) as RowNumber
+from (select 'Btables' as TablesChecked,
+          case when B1.name != B2.name or B1.DOB != B2.DOB then 'Differ'
+              else 'Identical'
+          end Compare
+          from B1 full outer join B2 on B1.id= B2.id) checking
+  ),
+  
+Ctables AS
+(
+select  TablesChecked, Compare, row_number() over(order by Compare) as RowNumber
+from (select 'Ctables' as TablesChecked,
+          case when C1.name != C2.name or C1.DOB != C2.DOB then 'Differ'
+              else 'Identical'
+          end Compare
+          from C1 full outer join C2 on C1.id= C2.id) checking
+  ),
+  
+Dtables AS
+(
+select  TablesChecked, Compare, row_number() over(order by Compare) as RowNumber
+from (select 'Dtables' as TablesChecked,
+          case when D1.name != D2.name or D1.DOB != D2.DOB then 'Differ'
+              else 'Identical'
+          end Compare
+          from D1 full outer join D2 on D1.id= D2.id) checking
+  )
+
+select TablesChecked, Compare
+from Atables
+where RowNumber = 1
+UNION ALL
+SELECT TablesChecked, Compare
+FROM Btables
+where RowNumber = 1
+UNION ALL
+SELECT TablesChecked, Compare
+FROM Ctables
+where RowNumber = 1
+UNION ALL
+SELECT TablesChecked, Compare
+FROM Dtables
+where RowNumber = 1
