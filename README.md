@@ -8,5 +8,5 @@ Dashboard using Plotly-Dash and Pandas
 
 
 SQL Examples Use http://sqlfiddle.com/#!18 - MS SQL Server 2017 - Data input is at the top and query is at the bottom in the text file
-1. Comparing two tables and outputting the difference 
-2. Finding concurrent jobs by start and end times
+1. Comparing two tables and outputting the difference - SQLFiddleCompareTables.txt
+2. Finding concurrent jobs by start and end times - SQLFiddleConcurrent.txt
