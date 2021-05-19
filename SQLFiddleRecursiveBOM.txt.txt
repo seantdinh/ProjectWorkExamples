@@ -1,0 +1,87 @@
+  CREATE TABLE PARTLIST
+                 (PART VARCHAR(8),
+                  SUBPART VARCHAR(8),
+                  QUANTITY INTEGER);
+                  
+    
+INSERT INTO PARTLIST
+    ([PART], [SUBPART], [QUANTITY])
+VALUES
+    (00, 01, 5),
+    (00, 05, 3),
+    (01, 02, 2),
+    (01, 03, 3),
+    (01, 04, 4),
+    (01, 06, 3),
+    (02, 05, 7),
+    (02, 06, 6),
+    (03, 07, 6),
+    (04, 08, 10),
+    (04, 09, 11),
+    (05, 10, 10),
+    (05, 11, 10),
+    (06, 12, 10),
+    (06, 13, 10),
+    (07, 14, 8),
+    (07, 12, 8)
+;
+
+
+------------------------------------------------------------------------------------------------------
+
+
+Example 1: Single level explosion
+
+WITH RPL (PART, SUBPART, QUANTITY) AS
+     (  SELECT ROOT.PART, ROOT.SUBPART, ROOT.QUANTITY
+        FROM PARTLIST ROOT
+        WHERE ROOT.PART = 01
+      UNION ALL
+        SELECT CHILD.PART, CHILD.SUBPART, CHILD.QUANTITY
+        FROM RPL PARENT, PARTLIST CHILD
+        WHERE  PARENT.SUBPART = CHILD.PART
+     )
+SELECT DISTINCT PART, SUBPART, QUANTITY
+ FROM RPL
+  ORDER BY PART, SUBPART, QUANTITY;
+
+
+
+
+
+
+
+Example 2: Summarized explosion
+
+
+WITH RPL (PART, SUBPART, QUANTITY) AS
+   (
+      SELECT ROOT.PART, ROOT.SUBPART, ROOT.QUANTITY
+       FROM PARTLIST ROOT
+       WHERE ROOT.PART = 01
+    UNION ALL
+      SELECT PARENT.PART, CHILD.SUBPART, PARENT.QUANTITY*CHILD.QUANTITY
+       FROM RPL PARENT, PARTLIST CHILD
+       WHERE PARENT.SUBPART = CHILD.PART
+   )
+SELECT PART, SUBPART, SUM(QUANTITY) AS "Total QTY Used"
+ FROM RPL
+  GROUP BY PART, SUBPART
+  ORDER BY PART, SUBPART;
+
+
+Example 3: Controlling depth
+
+WITH RPL (LEVEL, PART, SUBPART, QUANTITY) AS
+      (
+         SELECT 1, ROOT.PART, ROOT.SUBPART, ROOT.QUANTITY
+          FROM PARTLIST ROOT
+          WHERE ROOT.PART = 01
+       UNION ALL
+         SELECT PARENT.LEVEL+1, CHILD.PART, CHILD.SUBPART, CHILD.QUANTITY
+          FROM RPL PARENT, PARTLIST CHILD
+          WHERE PARENT.SUBPART = CHILD.PART
+            AND PARENT.LEVEL < 2
+      )
+ SELECT PART, LEVEL, SUBPART, QUANTITY
+   FROM RPL;
