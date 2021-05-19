@@ -15,3 +15,8 @@ Use http://sqlfiddle.com/#!18 - MS SQL Server 2017 - Data input is at the top an
 
 2. Finding concurrent jobs by start and end times - SQLFiddleConcurrent.txt
 ![SQLConcurrent](https://user-images.githubusercontent.com/49729977/116509903-ebc48980-a878-11eb-8e09-18f38ce583c0.png)
+
+3.Recursion SQL: bill of materials
+![SQLRecursion](https://user-images.githubusercontent.com/49729977/118740594-1ca53800-b801-11eb-9d2d-872b995b1e7e.png)
+
+
