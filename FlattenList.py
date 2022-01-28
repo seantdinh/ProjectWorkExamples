@@ -1,10 +1,12 @@
-def flattenlist(list):
-    # output = [item for sublist in list for item in sublist]
-    output = []
-    for sublist in list:
-        for item in sublist:
-            output.append(item)
 
-    print(output)
+def flatten_list(ip_list, op_list=[]):
+    for i in ip_list:
+        if isinstance(i, list):
+            flatten_list(i, op_list)
+        else:
+            op_list.append(i)
+    return op_list
 
-flattenlist([1,2,[3,4 [5],[6,7,[8,[9]]]]])
+ip_list = [1, 2, [3, [4, [5, 6, [7,8,[9]]]]]]
+print(flatten_list(ip_list))
+
