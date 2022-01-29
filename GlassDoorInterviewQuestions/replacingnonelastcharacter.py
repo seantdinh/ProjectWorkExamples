@@ -1,20 +1,21 @@
 
-def none_replace(ls):
-    t = 0
-    rs = []
-    for i in ls:
+def replacingnulls(list):
+    ## replacing nulls with pervious value
+    previousNumber = 0
+    answer = []
+
+    for i in list:
         if i is not None:
-            rs.append(i)
-            t = i
+            answer.append(i)
+            previousNumber = i
         else:
-            rs.append(t)
-    
-    for i, x in enumerate(rs):
-        if x == 0:
-            rs[i] = None
+            answer.append(previousNumber)
 
-    return rs
+    for count, i in enumerate(answer):
+        if i == 0:
+            answer[count] = None
 
+    return answer
 stuffies = [None, None, 1, 2, None, None, 3, 4, None, 5, None, None]
 
-print(none_replace(stuffies))
+print(replacingnulls(stuffies))
