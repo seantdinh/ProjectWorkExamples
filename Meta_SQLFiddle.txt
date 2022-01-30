@@ -25,8 +25,8 @@ CREATE TABLE orders
 INSERT INTO salesperson
     ("id", "age", "name", "salary")
 VALUES
-    (1, 61, 'Sean', 140000 ),
-    (2, 34, 'Abe', 44000),
+    (1, 61, 'Abe', 140000 ),
+    (2, 34, 'Bob', 44000),
     (5, 34, 'Chris', 40000),
     (7, 41, 'Dan', 52000),
     (8, 57, 'Ken', 1150000),
@@ -53,3 +53,50 @@ VALUES
     (70, '5/6/98', 9, 7, 150)
     ;   
  
+
+
+Given the tables above, find the following: 
+a. The names of all salespeople that have an order with Samsonic.
+select salesperson.name 
+from orders
+    left join customer on customer.id = orders.customerid
+    left join salesperson on salesperson.id = orders.salespersonid
+where customer.name = 'Samsonic' 
+
+b. The names of all salespeople that do not have any order with Samsonic. 
+select salesperson.name 
+from orders
+    left join customer on customer.id = orders.customerid
+    left join salesperson on salesperson.id = orders.salespersonid
+where customer.name <> 'Samsonic' 
+
+c. The names of salespeople that have 2 or more orders. 
+select salesperson.name
+from orders
+    left join customer on customer.id = orders.customerid
+    left join salesperson on salesperson.id = orders.salespersonid
+group by salesperson.name
+having count(orders) >= 2
+
+d. The names and ages of all salespersons must having a salary of 100,000 or greater.
+select salesperson.name, salesperson.age, salesperson.salary
+from orders
+    left join customer on customer.id = orders.customerid
+    left join salesperson on salesperson.id = orders.salespersonid
+where salesperson.salary >= 100000
+
+e. What sales people have sold more than 1400 total units?
+select salesperson.name, orders.amount
+from orders
+    left join customer on customer.id = orders.customerid
+    left join salesperson on salesperson.id = orders.salespersonid
+group by salesperson.name, orders.amount
+having sum(amount) > 1400
+
+f. When was the earliest and latest order made to Samony?
+
+select max(orderdate), min(orderdate)
+from orders
+    left join customer on customer.id = orders.customerid
+    left join salesperson on salesperson.id = orders.salespersonid
+where customer.name = 'Samony'
