@@ -100,3 +100,6 @@ from orders
     left join customer on customer.id = orders.customerid
     left join salesperson on salesperson.id = orders.salespersonid
 where customer.name = 'Samony'
+
+
+http://sqlfiddle.com/#!15/44127a/11
