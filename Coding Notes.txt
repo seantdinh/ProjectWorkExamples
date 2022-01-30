@@ -1,0 +1,2 @@
+Cross Join = 3x3 rows - returns all possible variations between rows 
+Outer Join = 3+3 rows - returns all match and unmatched rows
