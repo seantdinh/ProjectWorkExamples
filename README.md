@@ -8,7 +8,7 @@ Examples of prior work using Python, Pandas, Dash, Plotly, Flask, SQL
 
 
 ## SQL Examples 
-Use http://sqlfiddle.com/#!18 - MS SQL Server 2017 - Data input is at the top and query is at the bottom in the text file
+Use https://sqlize.online/ - MS SQL Server 2017 - Data input is at the top and query is at the bottom in the text file
 
 1. Comparing two tables and outputting the difference - SQLFiddleCompareTables.txt
 ![SQLCompareTables](https://user-images.githubusercontent.com/49729977/116509885-e109f480-a878-11eb-958d-da96d4d08a1c.png)
